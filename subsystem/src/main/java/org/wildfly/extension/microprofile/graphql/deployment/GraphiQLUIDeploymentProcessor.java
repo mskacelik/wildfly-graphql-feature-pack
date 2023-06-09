@@ -68,7 +68,9 @@ public class GraphiQLUIDeploymentProcessor implements DeploymentUnitProcessor {
                     Path originalPath = renderJsFile.getPhysicalFile().toPath();
                     Path pathToUpdatedRenderJs = Files.createTempFile(null, "render.js");
                     String graphQlPath = ctxRoot.endsWith("/") ? ctxRoot + "graphql" : ctxRoot + "/graphql";
+                    String logoPath = ctxRoot.endsWith("/") ? ctxRoot + "graphql-ui" : ctxRoot + "/graphql-ui";
                     updateApiUrl(originalPath, pathToUpdatedRenderJs,  graphQlPath);
+                    updateLogoUrl(pathToUpdatedRenderJs, pathToUpdatedRenderJs,  logoPath);
                     mountedOverlay = VFS.mountReal(pathToUpdatedRenderJs.toFile(), renderJsFile);
                 }
             }
@@ -100,17 +102,21 @@ public class GraphiQLUIDeploymentProcessor implements DeploymentUnitProcessor {
         }
     }
 
-    private void updateApiUrl(Path renderJs, Path targetFile, String graphqlPath) throws IOException {
-        String content = new String(Files.readAllBytes(renderJs), StandardCharsets.UTF_8);
-        String result = updateApiUrl(content, graphqlPath);
+    private void updateFile(Path inputFile, Path outputFile, String searchString, String replacementString) throws IOException {
+        String content = new String(Files.readAllBytes(inputFile), StandardCharsets.UTF_8);
+        String result = content.replace(searchString, replacementString);
         if (result.equals(content)) {
-            MicroProfileGraphQLLogger.LOGGER.couldNotUpdateRenderJs(renderJs.toString());
+            MicroProfileGraphQLLogger.LOGGER.couldNotUpdateRenderJs(inputFile.toString());
         }
-        Files.write(targetFile, result.getBytes(StandardCharsets.UTF_8));
+        Files.write(outputFile, result.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String updateApiUrl(String original, String graphqlPath) {
-        return original.replace("const api = '/graphql';", "const api = '" + graphqlPath + "';");
+    private void updateApiUrl(Path renderJs, Path targetFile, String graphqlPath) throws IOException {
+        updateFile(renderJs, targetFile, "const api = '/graphql';", "const api = '" + graphqlPath + "';");
+    }
+
+    private void updateLogoUrl(Path renderJs, Path targetFile, String logoPath) throws IOException {
+        updateFile(renderJs, targetFile, "const logo = '/graphql-ui';", "const logo = '" + logoPath + "';");
     }
 
     @Override

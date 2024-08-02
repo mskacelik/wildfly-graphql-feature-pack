@@ -1,0 +1,9 @@
+<jboss-deployment-structure>
+    <deployment>
+        <dependencies>
+            <module name="org.wildfly.extension.microprofile.graphql-client-smallrye" services="import"/>
+            <module name="io.smallrye.graphql.client.common" services="import"/>
+            <module name="io.smallrye.graphql.client.vertx" services="import"/> <!--for client builder service loader-->
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

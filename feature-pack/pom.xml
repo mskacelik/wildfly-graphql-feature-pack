@@ -138,6 +138,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>wildfly-microprofile-graphql-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Normal dependencies -->
         <dependency>
             <groupId>io.smallrye</groupId>
@@ -182,6 +188,18 @@
         <dependency>
             <groupId>io.smallrye</groupId>
             <artifactId>smallrye-graphql-client-implementation-vertx</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.smallrye</groupId>
+            <artifactId>smallrye-graphql-client-model</artifactId>
+            <scope>provided</scope>
+            <version>2.9.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.smallrye</groupId>
+            <artifactId>smallrye-graphql-client-model-builder</artifactId>
+            <version>2.9.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
